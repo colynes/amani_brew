@@ -1,6 +1,6 @@
 import { createInertiaApp } from '@inertiajs/react'
 import { createRoot } from 'react-dom/client'
-import './bootstrap'
+import './lib/utils' // temp placeholder for utils.js\nimport './bootstrap'
 
 const appName = import.meta.env.VITE_APP_NAME || 'AmaniBrew';
 
