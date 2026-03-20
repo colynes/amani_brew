@@ -21,9 +21,7 @@ Route::get('/cart', function () {
 });
 
 Route::middleware(['auth', 'role:admin,manager'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Admin/Dashboard');
-    });
+    Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index']);
     Route::get('/inventory/categories', function () {
         return Inertia::render('Admin/Inventory/Categories/Index');
     });
@@ -43,3 +41,4 @@ Route::middleware(['auth', 'role:admin,manager'])->prefix('admin')->group(functi
         return Inertia::render('Admin/Users/Index');
     });
 });
+

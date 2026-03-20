@@ -1,36 +1,30 @@
-import { FC } from 'react'
-import { Menu, User } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Link, usePage } from '@inertiajs/react'
+import { FC } from "react";
+import { User } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "@inertiajs/react";
 
 const MobileHeader: FC = () => {
-  const { auth } = usePage().props as any
-
   return (
-    <header className="sticky top-0 z-40 w-full h-16 px-4 sm:px-6 lg:px-8 bg-card/95 backdrop-blur-sm border-b border-border shadow-sm flex items-center">
-      <Button
-        variant="ghost"
-        size="icon"
-        className="mr-4 -ml-1 h-9 w-9"
-      >
-        <Menu className="h-5 w-5" />
-      </Button>
-
+    <header className="sticky top-0 z-40 flex h-16 w-full items-center border-b border-slate-200 bg-white px-4 shadow-sm md:hidden">
       <Link
-        href="/admin/dashboard"
-        className="flex-1 font-bold bg-gradient-to-r from-coffee to-amber-accent bg-clip-text text-transparent text-xl truncate"
+        href="/dashboard"
+        className="flex-1 truncate text-xl font-bold text-emerald-600"
       >
         Amani Brew
       </Link>
 
-      <div className="flex items-center space-x-2">
-        <Button variant="ghost" size="icon" className="h-9 w-9">
-          <User className="h-5 w-5" />
+      <div className="flex items-center gap-2">
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="h-9 w-9"
+        >
+          <User className="h-5 w-5 text-slate-700" />
         </Button>
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default MobileHeader
-
+export default MobileHeader;

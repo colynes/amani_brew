@@ -1,3 +1,6 @@
+import '../css/app.css';
+import './bootstrap';
+
 import { createInertiaApp } from '@inertiajs/react'
 import { createRoot } from 'react-dom/client'
 import './lib/utils' // temp placeholder for utils.js\nimport './bootstrap'
