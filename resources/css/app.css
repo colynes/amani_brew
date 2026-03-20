@@ -1,11 +1,235 @@
-@import 'tailwindcss';
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
+/* Sources for Tailwind purging */
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
+@source '../**/*.jsx';
+@source '../**/*.ts';
+@source '../**/*.tsx';
 
+/* Font family */
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+/* AmaniBrew Design Tokens - Coffee Business Dashboard */
+:root {
+  /* Brand Colors */
+  --coffee-brown: 30 39% 46%; /* #6F4E37 */
+  --coffee-brown-rgb: 111, 78, 55;
+  --dark-roast: 20 46% 22%; /* #4B2E1E */
+  --dark-roast-rgb: 75, 46, 30;
+  --warm-cream: 45 50% 97%; /* #F8F5F0 */
+  --amber-accent: 40 65% 45%; /* #C68A2B */
+  --amber-accent-rgb: 198, 138, 43;
+  --soft-beige: 42 40% 90%; /* #EFE7DD */
+
+  /* Neutrals */
+  --background: 15 12% 97%; /* #FAFAF9 */
+  --background-rgb: 250, 250, 249;
+  --card: 0 0% 100%; /* #FFFFFF */
+  --card-rgb: 255, 255, 255;
+  --border: 14 8% 85%; /* #E7E5E4 */
+  --border-rgb: 231, 229, 228;
+
+  /* Text */
+  --text-heading: 15 8% 10%; /* #1C1917 */
+  --text-body: 25 9% 24%; /* #44403C */
+  --text-muted: 30 11% 48%; /* #78716C */
+  --text-muted-rgb: 120, 113, 108;
+
+  /* Semantic */
+  --success: 134 79% 34%; /* #16A34A */
+  --warning: 38 81% 45%; /* #D97706 */
+  --danger: 7 82% 61%; /* #DC2626 */
+  --info: 221 83% 53%; /* #2563EB */
+
+  /* Core shadcn/ui tokens */
+  --primary: var(--coffee-brown);
+  --primary-foreground: 0 0% 98%;
+  --primary-rgb: var(--coffee-brown-rgb);
+  --secondary: 42 40% 90%; /* soft-beige */
+  --secondary-foreground: 25 9% 24%; /* body text */
+  --destructive: var(--danger);
+  --destructive-foreground: 0 0% 98%;
+  --muted: 30 9% 87%; /* light muted bg */
+  --muted-foreground: var(--text-muted);
+  --accent: var(--warm-cream);
+  --accent-foreground: var(--text-body);
+  --popover: 0 0% 100%;
+  --popover-foreground: var(--text-heading);
+  --ring: var(--coffee-brown);
+
+  /* Spacing scale (4px rhythm) */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+
+  /* Border radius scale */
+  --radius: 0.75rem; /* 12px - modern rounded */
+  --radius-sm: 0.5rem;
+  --radius-lg: 1rem;
+
+  /* Shadows - subtle professional */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  /* Typography */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Focus ring */
+  --ring-color: var(--coffee-brown);
+  --ring-width: 2px;
+  --ring-offset: 2px;
+}
+
+/* Dark mode (optional - override for future) */
+[data-theme='dark'] {
+  --background: 20 14% 8%;
+  --card: 20 14% 12%;
+  --text-heading: 0 0% 98%;
+  --text-body: 0 0% 92%;
+}
+
+/* Base styles */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  :root {
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased font-sans;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+    line-height: 1.5;
+  }
+
+  /* Typography scale */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+    margin-top: 0;
+  }
+
+  h1 { @apply text-4xl leading-tight; }
+  h2 { @apply text-3xl leading-tight; }
+  h3 { @apply text-2xl leading-tight; }
+  h4 { @apply text-xl leading-tight; }
+  h5 { @apply text-lg font-semibold; }
+  h6 { @apply text-base font-semibold; }
+
+  p {
+    @apply text-text-body leading-relaxed;
+  }
+
+  a {
+    @apply text-primary hover:text-primary/80 transition-colors;
+    text-decoration: none;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/50 rounded-radius;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground;
+  }
+}
+
+/* Utility classes for dashboard */
+@layer components {
+  .app-shell {
+    @apply min-h-screen bg-gradient-to-br from-background via-background to-muted;
+  }
+
+  .page-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8;
+  }
+
+  .page-header {
+    @apply border-b border-border pb-8 mb-8;
+  }
+
+  .section-title {
+    @apply text-3xl font-bold text-text-heading;
+  }
+
+  .section-subtitle {
+    @apply text-xl text-text-muted mt-2;
+  }
+
+  .dashboard-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+  }
+
+  .stat-card {
+    @apply group/card bg-card shadow-md hover:shadow-lg border border-border/50 rounded-2xl p-6 transition-all duration-300;
+  }
+
+  .form-section {
+    @apply space-y-6;
+  }
+
+  .table-card {
+    @apply bg-card border border-border rounded-xl shadow-sm overflow-hidden;
+  }
+
+  .empty-state {
+    @apply text-center py-12 px-8 bg-muted rounded-xl border border-border/50;
+  }
+
+  .auth-wrapper {
+    @apply min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8;
+  }
+
+  .auth-card {
+    @apply w-full max-w-md space-y-8 bg-card shadow-xl border border-border/20;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+

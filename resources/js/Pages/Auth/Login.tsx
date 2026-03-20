@@ -57,7 +57,7 @@ export default function Login({ }: { }) {
                     <Input
                       id="email"
                       name="email"
-                      placeholder="your-email@domain.com"
+                      placeholder="Username or email"
                       type="email"
                       value={data.email}
                       onChange={(e) => setData('email', e.target.value)}
@@ -80,7 +80,7 @@ export default function Login({ }: { }) {
                     <Input
                       id="password"
                       name="password"
-                      placeholder="••••••••"
+                      placeholder="Enter Your Password"
                       type="password"
                       value={data.password}
                       onChange={(e) => setData('password', e.target.value)}
@@ -119,15 +119,6 @@ export default function Login({ }: { }) {
                 </Button>
               </CardFooter>
             </Card>
-            <p className="px-8 text-center text-sm text-muted-foreground">
-              Don't have an account?{' '}
-              <Link
-                href="/register"
-                className="underline underline-offset-4 hover:text-primary"
-              >
-                Register
-              </Link>
-            </p>
           </div>
         </div>
       </div>
