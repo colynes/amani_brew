@@ -14,41 +14,45 @@ export default function AppLayout({
   children,
   title = "Dashboard",
 }: AppLayoutProps) {
-  const { url } = usePage().props as any;
+  const { auth, url } = usePage().props as any;
+
+  if (!auth?.user) {
+    return children;
+  }
 
   return (
     <>
       <Head title={`Amani Brew Admin - ${title}`} />
 
-      <div className="relative flex min-h-screen bg-slate-50">
+      <div className="app-shell">
         {/* Desktop Sidebar */}
-        <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-slate-200 bg-white shadow-sm md:flex">
+        <aside className="fixed inset-y-0 left-0 z-50 w-64 flex-shrink-0 border-r border-border bg-slate-900 shadow-xl flex">
           <Sidebar currentPath={url} />
         </aside>
 
         {/* Main Content */}
-        <main className="flex min-h-screen flex-1 flex-col md:pl-64">
+        <main className="flex-1 flex flex-col overflow-hidden md:ml-64">
           {/* Mobile Header */}
           <MobileHeader />
 
-          {/* Content Area */}
-          <div className="flex-1 overflow-y-auto p-4 md:p-8">
-            <div className="mx-auto max-w-7xl">{children}</div>
+          {/* Content */}
+          <div className="flex-1 overflow-y-auto page-container">
+            {children}
           </div>
         </main>
 
-        {/* Mobile Sidebar */}
+        {/* Mobile Sidebar Overlay */}
         <Sheet>
           <SheetTrigger asChild>
-            <Button
-              type="button"
-              className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full bg-emerald-600 text-white shadow-2xl hover:bg-emerald-700 md:hidden"
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="fixed md:hidden top-4 left-4 z-50 h-12 w-12 rounded-full"
             >
               <Menu className="h-6 w-6" />
             </Button>
           </SheetTrigger>
-
-          <SheetContent side="left" className="w-72 p-0">
+          <SheetContent side="left" className="w-64 p-0 border-r-0 md:hidden bg-slate-900">
             <Sidebar currentPath={url} />
           </SheetContent>
         </Sheet>
@@ -56,3 +60,4 @@ export default function AppLayout({
     </>
   );
 }
+

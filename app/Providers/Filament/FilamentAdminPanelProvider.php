@@ -32,9 +32,13 @@ class FilamentAdminPanelProvider extends PanelProvider
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            ->pages([
+->pages([
                 Pages\Dashboard::class,
             ])
+            ->widgets([
+                \App\Filament\Widgets\StatsOverview::class,
+            ])
+
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,

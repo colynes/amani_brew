@@ -1,144 +1,138 @@
-import React from 'react'
-import { Head, usePage } from '@inertiajs/react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import PageHeader from '@/components/page-header'
-import DataTable from '@/components/data-table'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import type { DashboardProps, Product } from '@/types'
+import { Head, Link } from '@inertiajs/react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import PageHeader from '@/components/page-header';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-// -----------------------------
-// Badge variant mapping
-// -----------------------------
-const getBadgeVariant = (status: Product['status'] | string): 'success' | 'warning' | 'destructive' | 'default' => {
-  switch (status) {
-    case 'in-stock':
-      return 'success'
-    case 'low-stock':
-      return 'warning'
-    case 'out-of-stock':
-      return 'destructive'
-    default:
-      return 'default'
-  }
+interface DashboardProps {
+  totalRevenue: number;
+  ordersToday: number;
+  lowStockItems: number;
+  recentProducts: Array<any>;
 }
 
-// -----------------------------
-// Table columns
-// -----------------------------
-const columns = [
-  { header: 'Name', accessor: 'name' },
-  {
-    header: 'Status',
-    accessor: 'status',
-    render: (status: string) => (
-      <Badge variant={getBadgeVariant(status)}>
-        {status?.replace('-', ' ') || 'Unknown'}
-      </Badge>
-    ),
-  },
-  { header: 'Price', accessor: 'price' },
-  { header: 'Stock', accessor: 'stock' },
-]
-
-export default function Dashboard() {
-  // -----------------------------
-  // Inertia props from backend
-  // -----------------------------
-  const {
-    totalRevenue,
-    ordersToday,
-    lowStockItems,
-    recentProducts,
-  } = usePage().props as unknown as DashboardProps & {
-    recentProducts: (Product & { price: string; stock: number; status: string })[]
-  }
-
-  // -----------------------------
-  // Currency formatter
-  // -----------------------------
-  const formatCurrency = (amount: number): string => {
-    return new Intl.NumberFormat('en-TZ', {
-      style: 'currency',
-      currency: 'TZS',
-      minimumFractionDigits: 0,
-    }).format(amount)
-  }
-
+export default function Dashboard({ totalRevenue, ordersToday, lowStockItems, recentProducts }: DashboardProps) {
   return (
     <>
       <Head title="Dashboard" />
 
-      <PageHeader
-        title="Dashboard"
-        subtitle="Live coffee operations dashboard"
-        action={<Button className="stat-card">Create New Product</Button>}
-      />
+      <div className="page-container">
+        {/* Header */}
+        <div className="page-header mb-12">
+          <h1 className="section-title text-text-heading">Dashboard</h1>
+          <p className="section-subtitle text-text-muted">Welcome to Amani Brew admin panel. All data loaded from database.</p>
+        </div>
 
-      {/* -----------------------------
-          Stats Cards
-      ----------------------------- */}
-      <div className="dashboard-grid mb-8">
-        <Card className="stat-card">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-3xl font-bold text-coffee">
-              {formatCurrency(totalRevenue)}
-            </CardTitle>
+        {/* Stats Grid */}
+        <div className="dashboard-grid mb-12">
+          <Card className="stat-card">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-text-muted">Total Revenue</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-text-heading">
+                TZS {totalRevenue?.toLocaleString() || '0'}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="stat-card">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-text-muted">Orders Today</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-success">
+                {ordersToday || 0}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="stat-card">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-text-muted">Low Stock</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-warning">
+                {lowStockItems || 0}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="stat-card">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-text-muted">Products</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-primary">
+                {recentProducts?.length || 0}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Recent Products */}
+        <div className="table-card">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+            <CardTitle className="text-xl font-semibold text-text-heading">Recent Products</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-text-muted mb-1">Total Revenue</p>
-            <p className="text-success text-sm font-medium">Live data</p>
+            {recentProducts?.length ? (
+              <div className="rounded-md border">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-border bg-muted/50">
+                        <th className="text-left p-4 font-semibold text-text-muted text-sm">Product</th>
+                        <th className="text-left p-4 font-semibold text-text-muted text-sm">Stock</th>
+                        <th className="text-left p-4 font-semibold text-text-muted text-sm">Price</th>
+                        <th className="text-left p-4 font-semibold text-text-muted text-sm">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {recentProducts.map((product) => (
+                        <tr key={product.id} className="border-b border-border hover:bg-muted/50 transition-colors">
+                          <td className="p-4">
+                            <div className="font-medium text-text-heading">{product.name}</div>
+                            <div className="text-sm text-text-muted">{product.category?.name}</div>
+                          </td>
+                          <td className="p-4">
+                            <span className={`text-sm font-medium ${
+                              product.status === 'low-stock' ? 'text-warning' : 'text-success'
+                            }`}>
+                              {product.stock}
+                            </span>
+                          </td>
+                          <td className="p-4">
+                            <span className="text-lg font-semibold text-primary">
+                              TZS {product.price}
+                            </span>
+                          </td>
+                          <td className="p-4">
+                            <Badge variant={product.status === 'low-stock' ? 'destructive' : 'default'}>
+                              {product.status.replace('-', ' ').toUpperCase()}
+                            </Badge>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ) : (
+              <div className="empty-state">
+                <h3 className="text-lg font-semibold text-text-heading mb-2">No products yet</h3>
+                <p className="text-text-muted mb-6">Get started by creating your first product category.</p>
+                <Button asChild>
+                  <Link href="/admin/categories">
+                    Manage Categories
+                  </Link>
+                </Button>
+              </div>
+            )}
           </CardContent>
-        </Card>
-
-        <Card className="stat-card">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-3xl font-bold text-coffee">{ordersToday}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-text-muted mb-1">Orders Today</p>
-            <Badge className="mt-1">Live</Badge>
-          </CardContent>
-        </Card>
-
-        <Card className="stat-card">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-3xl font-bold text-warning">{lowStockItems}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-text-muted mb-1">Low Stock Items</p>
-            <Badge variant="destructive" className="mt-1">
-              Restock needed
-            </Badge>
-          </CardContent>
-        </Card>
+        </div>
       </div>
-
-      {/* -----------------------------
-          Recent Products Table
-      ----------------------------- */}
-      <Card className="table-card">
-        <CardHeader>
-          <CardTitle className="section-title">Recent Products ({recentProducts.length})</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {recentProducts.length === 0 ? (
-            <div className="empty-state">
-              <h3 className="text-2xl font-bold text-text-muted mb-2">No products yet</h3>
-              <p className="text-text-muted mb-4">Create your first product to get started.</p>
-              <Button className="stat-card">Add Product</Button>
-            </div>
-          ) : (
-            <DataTable
-              columns={columns}
-              data={recentProducts}
-              className="stat-card"
-              onRowClick={(row: Product) => console.log('Clicked row:', row)}
-            />
-          )}
-        </CardContent>
-      </Card>
     </>
-  )
+  );
 }
+
